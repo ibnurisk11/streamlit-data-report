@@ -1,41 +1,14 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import datetime as dt
 from io import BytesIO
 import re
-
-# Initialize connection
-conn = st.connection('mysql', type='sql')
-
-# Query SQL
+# Load data from CSV
 @st.cache_data(ttl=3600)
 def load_data():
-    query = """
-    SELECT
-        th.register_code AS id_borrower,
-        th.id_borrower_loan AS id_loan,
-        tk.bio_fullname AS borrower_name,
-        th.loan_amount AS nominal_pinjaman,
-        th.loan_tenor AS tenor,
-        th.loan_note AS loan_note,
-        tbc.borrower_name_company AS borrower_name_company,
-        tdx.marketing_name AS marketing_name,
-        th.loan_start_date AS tanggal_pencairan,
-        th.loan_status AS loan_status
-    FROM
-        tb_fintech_register AS tb
-        INNER JOIN tb_fintech_borrower_loan AS th ON tb.register_code = th.register_code
-        INNER JOIN tb_fintech_borrower_bio AS tk ON tb.register_code = tk.register_code
-        LEFT JOIN tb_fintech_borrower_detail_consumtive AS tbc ON tb.register_code = tbc.register_code
-        LEFT JOIN tb_fintech_marketing AS tdx ON th.id_marketing = tdx.id_Marketing
-    WHERE
-        th.loan_status IN ('Disbursed', 'Done', 'Closed', 'Unapproved')
-        AND th.loan_start_date BETWEEN '2024-01-01' AND '2025-12-31'
-    """
-    df = conn.query(query)
-    df["tanggal_pencairan"] = pd.to_datetime(df["tanggal_pencairan"], errors='coerce')
-    return df
+        df = pd.read_csv("dataset/personal-loan.csv")
+        df["tanggal_pencairan"] = pd.to_datetime(df["tanggal_pencairan"], errors='coerce')
+        return df
 
 df = load_data()
 
