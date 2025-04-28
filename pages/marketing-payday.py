@@ -6,7 +6,7 @@ import re
 # Load data from CSV
 @st.cache_data(ttl=3600)
 def load_data():
-        df = pd.read_csv("dataset/personal-loan.csv")
+        df = pd.read_csv("dataset/payday-loan.csv")
         df["tanggal_pencairan"] = pd.to_datetime(df["tanggal_pencairan"], errors='coerce')
         return df
 
