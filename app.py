@@ -10,14 +10,19 @@ def page_2():
     st.write("Welcome to Page 2!")
 
 def page_3():
-    st.title("Collection 🎉")
+    st.title("Finance 🎉")
     st.write("Welcome to Page 3!")
+
+def page_4():
+    st.title("Collection 🎈")
+    st.write("Welcome to Page 4!")
 
 # Set up navigation
 pages = {
     "Home": main_page,
     "Marketing - Risk": page_2,
-    "Collection": page_3
+    "Finance": page_3,
+    "Collection": page_4,
 }
 
 st.sidebar.title("Sanders Data Report")
